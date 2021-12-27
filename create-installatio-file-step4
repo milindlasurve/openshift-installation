@@ -1,0 +1,65 @@
+apiVersion: v1
+baseDomain: milind.com <base domain name>
+compute:
+- hyperthreading: Enabled
+  name: worker
+  replicas: 0
+controlPlane:
+  hyperthreading: Enabled
+  name: master
+  replicas: 3
+metadata:
+  name: uat
+networking:
+  clusterNetwork:
+  - cidr: 10.128.0.0/14
+    hostPrefix: 23
+  networkType: OpenShiftSDN
+  serviceNetwork:
+  - 172.30.0.0/16
+platform:
+  none: {}
+fips: false
+pullSecret: '{"auths":{"docker-registry.uat.milind.com:5000":{"auth":"cG9ydGFsbDplbmVyZ3k=","email":"milindlasurve0@gmail.com"}}}'
+sshKey: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAxFS9exrTRR11K8/WbyejdZYNs0gsdOFPzYnFH2tnG0 root@docker-registry.uat.ipanlpm.com' <ssh key change according your >
+additionalTrustBundle: |   <ca.crt file >
+ -----BEGIN CERTIFICATE-----
+ MIIFtTCCA52gAwIBAgIJAIAM4CwFZTXkMA0GCSqGSIb3DQEBCwUAMHExCzAJBgNV
+ BAYTAklOMRQwEgYDVQQIDAtNYWhhcmFzaHRyYTEPMA0GA1UEBwwGTXVtYmFpMREw
+ DwYDVQQKDAhQb3J0YWxsIDEoMCYGA1UEAwwfZG9ja2VyLXJlZ2lzdHJ5LnVhdC5p
+ cGFubHBtLmNvbTAeFw0yMTEwMjYwNTE3MjFaFw0yMjEwMjYwNTE3MjFaMHExCzAJ
+ BgNVBAYTAklOMRQwEgYDVQQIDAtNYWhhcmFzaHRyYTEPMA0GA1UEBwwGTXVtYmFp
+ MREwDwYDVQQKDAhQb3J0YWxsIDEoMCYGA1UEAwwfZG9ja2VyLXJlZ2lzdHJ5LnVh
+ dC5pcGFubHBtLmNvbTCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBANaK
+ k5Bi9ycPcopPwwUrBgY4+6mmAZkmJxKVQ3i9rI8ZppvNimiSlfm/QF7Do+MdOHzG
+ nDCLRrqVl5mPqP9Mx6plS20gxU70D9TL5wsP2v1UHTXSmdyLe1xfmbHUhzWpFwbV
+ Cbsc6ziO3NeivYdT3+KU44VQZPhoWUm3d1txvfTmzih2aiMoEWtEF1Dkj34BUxKi
+ GDFhvwoM8dfKFcuB+HWJReD2YXdiKLiqbNN8svkdX2fXe7+kPX/4FtLdqK3mPRJg
+ Lu9VwWFlS9M8L+nGq4LHw2OMqodIGzgsrGa5+qQxaYUVmCpxx6OmSSM8NI4Cia8c
+ x9eA3+F91qCWdp6O+HAY1kAWrgXE8x7xJik4cb4/6gg5UhNXY1QtP6muqMTOqo+s
+ OYdrpcJkxq0dNiHoR6P6QjW+iNK3KCOTytgg4s6DLpYRghSPZZ+HpjHqNRAMOA5i
+ urJGf9qpEqI/3EUmbFkfNv0GBoMsIBll7jMPQKqvAoIrqQYncw1HdJJELbSKG81M
+ 44shMPaYsvBrSHNmiITkiDv7WnH4iMGofB3EHn8Lw4edCp0eep3yDygKjHJfxnDg
+ WQ9E2R6Z0tU8+ONWCZhYvGsOLrtByPZ1Aa24RAPE4ZNXo7H/4lTUP/dB5QmELKIC
+ PR1ETuGdIH0tvsbm013cGbJSsWhMDj02EXbBol9VAgMBAAGjUDBOMB0GA1UdDgQW
+ BBQFwm3uGarsYzjg6N4gmwvooD0RLDAfBgNVHSMEGDAWgBQFwm3uGarsYzjg6N4g
+ mwvooD0RLDAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBCwUAA4ICAQBaZnsU24VK
+ z4JQZKZkJotTAc1G6eqhhOVCfiWQ5A2jKSEpMJ12GYmUbO51MDefeJI0laR9KiZA
+ 7tiw8kOWceXKBUKlH0OaN/sHPT1A2QgVygIRU5hOkoMmfTL0ihxMPbqoq8V4gLxi
+ 6EGJOfgov32e8IR6dla4Tl5wraMTSD8T0stBlAAWa8KTwi2LPOHxErzX+KTuvGps
+ hieRGztKQ+LIyP3N0/8JDushMtNlKXVKI85A9erivPhFHhRN+2Ckc3RhrBYQel++
+ uRATbCAOeQ3yQyMaaTSdJerhJzQ//mnwi286Q+nXc+U96QXs2Nndqd1eNZPg7QtF
+ EaT/p3cty84W05dBqaXLYJWu/mRF5m4GVRZ5PL48pbiXsmDUUfrXcV/FD0gleE6i
+ Z4uh+4ivRVXUKaI25sMYU0b15PK8twcPshFl6tm5R5r8HI9OsD5qC8EN+dpQr6X5
+ kbtf8EmEMPJAuz1mHd/9UThUfCicDO49niHNWjPdKk8e7RaJ24zCxBcgVhmRvAZ9
+ u23Fm8S8//HL+5ZurguqcFYPHQl4Bm64O9FANl8BuatlW1zLP7gDcMxB1Y7nxsDJ
+ 7sBT1Ps176QGROzxXbs/yP5T3A9SiB67Q1Kzv4MCxgz7NE33mzZz+3NsZjYpILt3
+ Bnh4Zs5+g+YOJOsNAXl+sCJVTShoIJo5OQ==
+ -----END CERTIFICATE-----
+imageContentSources:
+- mirrors:
+  - docker-registry.uat.milind.com:5000/ocp4/openshift4
+  source: quay.io/openshift-release-dev/ocp-release
+- mirrors:
+  - docker-registry.uat.milind.com:5000/ocp4/openshift4
+  source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
