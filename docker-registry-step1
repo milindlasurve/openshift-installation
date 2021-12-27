@@ -1,0 +1,75 @@
+	docker registry
+
+1 )     Docker : Use Registry with Login And Password
+
+Here I assume you install docker on your server or your local machine.
+Below are the steps to install and create docker registry access from login and password.
+
+Docker pull registry image
+docker pull registry:2
+
+Create folder 
+              mkdir /var/lib/docker/registry
+     
+To enable Basic authentication we required httpd-tools
+yum install -y  httpd-tools
+
+set up username and password with help off htpasswd. Once you execute below command
+It will ask you for your password 2 times.  
+htpasswd -Bc /etc/docker/.htpasswd admin
+ 
+We don't have any ssl certificates for this so we have to add an entry in the daemon.json file. 
+             vi /etc/docker/daemon.json
+
+            Add below content in daemon.json file.
+{
+ "insecure-registries":
+[
+        "docker-registry.uat.ipanlpm.com:5000"
+]
+
+}
+
+
+	Save and exit from this file. 
+ 
+Restart docker service
+
+systemctl restart docker
+
+Run docker container with adding some volumes. 
+   
+docker run -d -p 5000:5000 --name docker-registry --hostname docker-registry \
+-v /var/lib/docker/registry:/var/lib/docker/registry \
+-v /etc/docker:/auth \
+-e REGISTRY_AUTH=htpasswd \
+-e REGISTRY_AUTH_HTPASSWD_PATH=/auth/.htpasswd \
+-e REGISTRY_AUTH_HTPASSWD_REALM="Registry Realm" \
+registry:2 
+
+verify possible to access
+
+docker login docker-registry.uat.ipanlpm.com:5000
+
+It will ask you for your username and password. Put admin user and password which you set  on .htpasswd file 
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
