@@ -1,0 +1,62 @@
+Creating the Kubernetes manifest and Ignition config files
+openshift-install create manifests --dir /root/openshift-installation
+
+
+Check that the mastersSchedulable parameter in the <installation_directory>/manifests/cluster-scheduler-02-config.yml Kubernetes manifest file is set to false. This setting prevents pods from being scheduled on the control plane machines:
+
+           vi manifests/cluster-scheduler-02-config.yml
+               change true to false
+
+To create the Ignition configuration files, run the following command from the directory that contains the installation program
+
+          openshift-install create ignition-configs--dir=/root/openshift-installation
+
+Copy Ignition file to httpd server.
+cd /root/openshift-installation
+ mkdir /var/www/html/ocp4
+ cp -r * /var/www/html/ocp4
+
+
+
+
+
+
+
+
+
+
+
+10 ) Creating Red Hat Enterprise Linux CoreOS (RHCOS) machines.
+
+Download RHCOS iso and upload on Cloud.
+Create 7 vms from that same image and boot. 
+Below is the hostname to set as per the dns name (FQDN).
+ 
+bootstrap.uat.ipanlpm.com 
+master01.uat.ipanlpm.com
+master02.uat.ipanlpm.com 
+master03.uat.ipanlpm.com
+	worker01.uat.ipanlpm.com
+worker02.uat.ipanlpm.com 
+worker03.uat.ipanlpm.com
+
+
+11) Goto to VMs one by one and execute the commands below. 
+      
+
+a ) login to bootstrap vm and execute the below command.
+
+
+sudo coreos-installation install --copy-network --ignition-url=http://docker-registry.uat.ipanlpm.com/bootstrap.ign --insecure-ignition 
+	
+b ) login to master each vm and execute the below command.
+
+sudo coreos-installation install --copy-network --ignition-url=http://docker-registry.uat.ipanlpm.com/master.ign --insecure-ignition 
+
+c ) login to worker each vm and execute the below command.
+
+sudo coreos-installation install --copy-network --ignition-url=http://docker-registry.uat.ipanlpm.com/worker.ign --insecure-ignition 
+
+
+
+
