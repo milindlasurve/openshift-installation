@@ -1,0 +1,105 @@
+
+        Openshift Image Mirroring 
+ 
+Create folder to download OCP client 
+
+mkdir /root/openshift4.8.18/
+ wget  https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.8.18/openshift-client-linux.tar.gz
+ wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.8.18/openshift-install-linux-4.8.18.tar.gz
+
+
+Download Pull secret 
+
+Login to https://console.redhat.com/
+
+
+
+
+1 ) once you login click on Openshift option which is in your right side 
+
+
+
+image is not available that why below are the blank lines.
+Now we have to click on create cluster.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Multiple option are available on this tab to choose as per your requirement
+In this case we are managing openshift and deploying an ocp cluster on Infrastructure that you prepare and maintain. 
+
+
+Click on Datacenter tab
+
+
+
+
+Select the Bare Metal option - > user-provisioned .
+
+
+ Install OpenShift on Bare Metal with user-provisioned infrastructure.
+OpenShift installer
+Pull secret
+Command line interface
+Red Hat Enterprise Linux CoreOS (RHCOS)
+
+
+
+
+
+2)  download pull secret and keep in root directory or any where in our case we are keeping in /root folder and file name is pull.txt
+
+3) untar openshift client linux file 
+tar -zxvf openshift-client-linux.tar.gz
+ cp oc kubectl /usr/sbin/
+cd /root/openshift
+ cp openshift-install /usr/sbin/
+
+4) Set Environment 
+
+LOCAL_SECRET_JSON='/root/openshift/pull1.txt'
+OCP_RELEASE=4.8.18
+LOCAL_REGISTRY='docker-registry.uat.ipanlpm.com:5000'
+LOCAL_REPOSITORY='ocp4/openshift4'
+PRODUCT_REPO='openshift-release-dev'
+LOCAL_SECRET_JSON='/root/openshift/pull1.txt'
+RELEASE_NAME="ocp-release"
+ARCHITECTURE=x86_64
+REMOVABLE_MEDIA_PATH="/home/opt"
+
+
+5)  Mirror the version images to the internal container registry
+
+oc adm release mirror -a ${LOCAL_SECRET_JSON}  \
+   --from=quay.io/${PRODUCT_REPO}/${RELEASE_NAME}:${OCP_RELEASE}-${ARCHITECTURE} \
+     --to=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY} \
+  --to-release-image=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}:${OCP_RELEASE}-${ARCHITECTURE} --dry-run
+
+6)  Record the entire imageContentSources section from the output of the previous command
+
+7)  Mirror the images to a directory on the removable media.
+ 
+
+oc adm release mirror -a ${LOCAL_SECRET_JSON} --to-dir=${REMOVABLE_MEDIA_PATH}/mirror quay.io/${PRODUCT_REPO}/${RELEASE_NAME}:${OCP_RELEASE}-${ARCHITECTURE}
+
+8) Take the media to the restricted network environment and upload the images to the local container registry.
+
+  GODEBUG=x509ignoreCN=0  oc image mirror -a ${LOCAL_SECRET_JSON} --from-dir=${REMOVABLE_MEDIA_PATH}/mirror "file://openshift/release:${OCP_RELEASE}*" ${LOCAL_REGISTRY}/${LOCAL_REPOSITORY} 
